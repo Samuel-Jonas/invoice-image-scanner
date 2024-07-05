@@ -1,5 +1,4 @@
-import { User } from "@/common/model/User";
-
+import User from "@/common/model/User";
 
 const users: User[] = [
     {
@@ -82,4 +81,6 @@ const users: User[] = [
         isActive: false,
         createdAt: new Date(2024, 6, 4, 10, 30, 0, 0),
     }
-];
+]
+
+export default users;

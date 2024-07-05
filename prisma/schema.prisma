@@ -30,7 +30,7 @@ model Invoice {
   tax          Decimal
   amountDue    Decimal
   userId       Int
-  createadAt   DateTime     @default(now())
+  createdAt   DateTime     @default(now())
   invoiceItems InvoceItem[]
 }
 

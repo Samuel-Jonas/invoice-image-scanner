@@ -1,8 +1,8 @@
-export interface User {
+export default interface User {
     id:        number
     email:     string
     name:      string
     password:  string
-    isActive:  Boolean
+    isActive:  boolean
     createdAt: Date
 }
