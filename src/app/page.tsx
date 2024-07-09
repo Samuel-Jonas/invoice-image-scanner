@@ -1,7 +1,9 @@
+import LoginForm from "./components/template/LoginForm";
 import Page from "./components/template/Page";
 
 export default function Home() {
   return (
-    <Page>Home Page</Page>
+    <LoginForm />
+    //<Page>Home Page</Page>
   );
 }

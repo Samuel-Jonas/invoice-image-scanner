@@ -24,22 +24,12 @@ model User {
 }
 
 model Invoice {
-  id           Int          @id @default(autoincrement())
-  user         User         @relation(fields: [userId], references: [id])
-  totalAmount  Decimal
-  tax          Decimal
-  amountDue    Decimal
-  userId       Int
-  createdAt   DateTime     @default(now())
-  invoiceItems InvoceItem[]
-}
-
-model InvoceItem {
   id          Int      @id @default(autoincrement())
+  user        User     @relation(fields: [userId], references: [id])
   description String
   price       Decimal
   quantity    Int
-  invoice     Invoice  @relation(fields: [invoiceId], references: [id])
-  invoiceId   Int
+  total       Decimal
+  userId      Int
   createdAt   DateTime @default(now())
 }
