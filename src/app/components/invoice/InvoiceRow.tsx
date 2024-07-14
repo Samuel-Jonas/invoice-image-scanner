@@ -1,5 +1,4 @@
-import Invoice from "@/common/model/Invoice";
-import { IconDetails, IconFile, IconFileInfo, IconMenu } from "@tabler/icons-react";
+import type { Invoice } from "@prisma/client";
 
 export interface InvoiceRowProps {
     invoice: Invoice;
@@ -8,14 +7,13 @@ export interface InvoiceRowProps {
 export default function InvoiceRow(props: InvoiceRowProps) {
     const { invoice } = props;
     return (
-        <div className="flex p-4 bg-zinc-900 items-center gap-10 rounded-md">
+        <div className="grid grid-cols-6 p-4 items-center gap-4 rounded-md bg-gray-100">
             <span>#{invoice.id}</span>
-            <span>{invoice.user.name}</span>
-            <span>{invoice.amountDue}</span>
-            <span>{invoice.tax}</span>
-            <span>{invoice.totalAmount}</span>
+            <span>{invoice.description}</span>
+            <span>{invoice.price.toString()}</span>
+            <span>{invoice.quantity}</span>
+            <span>{invoice.total.toString()}</span>
             <span>{invoice.createdAt.toLocaleDateString('pt-BR')}</span>
-            <IconFileInfo />
         </div>
     )
 };

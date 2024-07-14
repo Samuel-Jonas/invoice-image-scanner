@@ -1,10 +1,12 @@
-import User from "@/common/model/User"
+import User from "@/src/common/model/User"
 
 export default interface Invoice {
     id:           number
     user:         User
-    totalAmount:  number
-    tax:          number
-    amountDue:    number
-    createdAt:   Date
+    description:  string
+    price:        number
+    quantity:     number
+    total:        number
+    createdAt:    Date
 }
+

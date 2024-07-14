@@ -1,9 +1,11 @@
-import LoginForm from "./components/template/LoginForm";
 import Page from "./components/template/Page";
+import { auth } from "@/src/lib/auth/authConfig";
+import { notFound } from "next/navigation";
 
-export default function Home() {
+export default async function Home() {
+  const session = await auth();
+  if (!session) return notFound();
   return (
-    <LoginForm />
-    //<Page>Home Page</Page>
+    <Page>Olá {session.user?.name} !</Page>
   );
 }

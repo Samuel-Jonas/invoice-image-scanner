@@ -1,4 +1,4 @@
-import Page from "@/app/components/template/Page";
+import Page from "@/src/app/components/template/Page";
 
 export default function AccountPage() {
     return (
