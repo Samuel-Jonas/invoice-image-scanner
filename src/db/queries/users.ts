@@ -1,10 +1,10 @@
 import type { User } from "@prisma/client";
 import prisma from "../../lib/prisma"
 
-export default async function fetchUserByEmail(email: string): Promise<User | null>{
-    const user = await prisma.user.findFirst({
+export default async function fetchUserById(id: string): Promise<User | null>{
+    const user = await prisma.user.findUnique({
         where: {
-            email
+            id
         }
     });
 

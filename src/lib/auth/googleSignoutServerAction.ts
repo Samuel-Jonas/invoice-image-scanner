@@ -4,7 +4,7 @@ import { signOut } from "../auth/authConfig";
 
 export const handleGoogleSignOut = async () => {
     try {
-        await signOut()
+        await signOut()     
     } catch (err) {
         throw err;
     }

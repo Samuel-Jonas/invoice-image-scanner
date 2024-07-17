@@ -37,7 +37,6 @@ export const authConfig: NextAuthConfig = {
     },
 
     async session({ session, token }) {
-      console.log("Session callback: ", session, token);
 
       return {
         ...session,

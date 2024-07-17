@@ -40,29 +40,57 @@ export default function AccountPage() {
     const formData = new FormData();
     formData.append("image", file ?? "");
 
-    const response = await fetch(
-      `${process.env.INTERNAL_API_HOST??"http://localhost:5000"}/invoice/upload`,
-      {
-        method: "POST",
-        body: formData,
-      }
-    );
+    const responseUser = await fetch('/api/user', { 
+      method: 'GET',
+      body: null
+    });
 
-    if (response.status === 404) {
-        alert("Estamos com problemas, tente novamente mais tarde");
+    const dataUser = await responseUser.json();
+    console.log(dataUser);
+
+    if (dataUser.status === 200) {
+
+      formData.append("userId", dataUser.userId);
+
+      try {
+        const response = await fetch(
+          `${process.env.INTERNAL_API_HOST??"http://localhost:5000"}/invoice/upload`,
+          {
+            method: "POST",
+            body: formData,
+            headers: {
+              'Access-Control-Allow-Origin': "*",
+              'Cache-Control': 'no-store',
+              'Accept': 'application/json',
+            }
+          }
+        );
+
+        if (!response.ok) {
+          const errorText = await response.text();
+          console.log(errorText);
+
+          throw new Error("Não foi possível se conectar ao servidor");
+        }
+
+        if (response.status === 404 || response.status === 500) {
+            alert("Estamos com problemas, tente novamente mais tarde");
+            setIsLoading(false);
+            window.location.reload();
+            return;
+        }
+
+        const body = await response.json();
+        alert("Imagem carregada com sucesso!");
         setIsLoading(false);
         window.location.reload();
-        return;
+
+      } catch(err) {
+        alert(err);
+      }
+    } else {
+      alert("Usuário não encontrado")
     }
-
-    const body = (await response.json()) as {
-      statusCode: 201 | 400 | 500 ;
-      error: string;
-    };
-
-    alert(body.error);
-
-    setIsLoading(false);
   };
 
   return (

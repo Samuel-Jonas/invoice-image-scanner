@@ -1,40 +1,46 @@
 import InvoiceRow from "./InvoiceRow";
-import invoices from "../../data/constants/invoices";
-import { cookies } from 'next/headers'
-import fetchAccountByIdToken from "@/src/db/queries/account"
-import fetchInvoicesByUserId from "@/src/db/queries/invoices"
+import { fetchInvoices, fetchInvoicesByUserId } from "@/src/db/queries/invoices"
+import { Invoice } from "@prisma/client";
+import { cookies } from "next/headers";
 
 export default async function InvoiceList() {
 
-    const cookieStore = cookies()
-    let sessionTokenCookie = cookieStore.get('authjs.session-token')
-    let sessionToken = sessionTokenCookie?.value;
+    try {
 
-    const account = await fetchAccountByIdToken(sessionToken??"");
+        let userId = cookies().get("userId");
 
-    const invoices = await fetchInvoicesByUserId(account?.userId??"");
+        let invoices: Invoice[] | null = null
 
-    return (
-        <div className="flex flex-col gap-4">
-            <div className="grid grid-cols-6 p-4 items-center gap-4 rounded-md bg-gray-100">
-                <span>Id</span>
-                <span>Descrição</span>
-                <span>Valor</span>
-                <span>Quantidade</span>
-                <span>Total</span>
-                <span>Data</span>
+        if (userId?.value === undefined){
+            invoices = await fetchInvoicesByUserId(userId?.value??"");
+        } else {
+            invoices = await fetchInvoices();
+        }
+    
+        return (
+            <div className="flex flex-col gap-4">
+                <div className="grid grid-cols-6 p-4 items-center gap-4 rounded-md bg-gray-600">
+                    <span>Id</span>
+                    <span>Descrição</span>
+                    <span>Valor</span>
+                    <span>Quantidade</span>
+                    <span>Total</span>
+                    <span>Data</span>
+                </div>
+                { 
+                    invoices != null || invoices != undefined ? (
+                        invoices.map((invoice) => (
+                            <InvoiceRow key={invoice.id} invoice={invoice} />
+                        ))
+                    ) : (
+                        <div className="p-4 text-center">
+                            Nenhum item encontrado
+                        </div>
+                    )
+                }
             </div>
-            {
-                invoices != null ? (
-                    invoices.map((invoice) => (
-                        <InvoiceRow key={invoice.id} invoice={invoice} />
-                    ))
-                ) : (
-                    <div className="p-4 text-center">
-                        Nenhum item encontrado
-                    </div>
-                )
-            }
-        </div>
-    );
+        );
+    } catch (error) {
+        console.log(error);
+    }
 };
